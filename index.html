@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Inf. Giovanni Nonominato">
+    <meta name="copyright" content="© 2026 - Tutti i diritti riservati - AUOC Careggi">
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.it">
+    <title>Scheda Unica di Intervento Intraospedaliero</title>
+    <style>
+        /* --- STILI GLOBALI E A4 (OTTIMIZZATI PER STAMPA 2 PAGINE) --- */
+        @page {
+            size: A4;
+            margin: 1.0cm; 
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 9pt; 
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5; 
+            /* PROTEZIONE: Impedisce la selezione del testo */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .container {
+            width: 21cm; 
+            max-width: 21cm;
+            min-height: 29.7cm; 
+            margin: 10px auto;
+            border: 1px solid #ced4da; 
+            background-color: white;
+            padding: 15px; 
+            box-sizing: border-box;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12); 
+            position: relative; 
+        }
+        .section {
+            margin-bottom: 10px; /* Ridotto leggermente per compensare lo spazio delle note */
+            padding-bottom: 5px;
+        }
+        
+        /* --- HEADER E TITOLI --- */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            font-size: 8.5pt;
+            border-bottom: 2px solid #00A950; 
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        .header-logo, .header-center-combined {
+            line-height: 1.2; 
+        }
+        .aou-logo, .header-center-combined img {
+            max-height: 38px; 
+            width: auto;
+            margin-right: 12px; 
+        }
+
+        .aouc-text-color {
+            color: #00A950; 
+            font-weight: 800; 
+            font-size: 9.5pt;
+        }
+        .aouc-subtext-color {
+            color: #495057;
+            font-size: 8.5pt;
+        }
+        
+        .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13pt; 
+            font-weight: 900;
+            color: #212529; 
+            margin: 0 0 15px 0; 
+            padding-bottom: 5px; 
+            border-bottom: 4px solid #00A950;
+        }
+
+        .title-left {
+            flex-grow: 1;
+            text-align: center;
+            padding-left: 120px;
+        }
+
+        .title-right {
+            font-size: 11pt;
+            font-weight: 700;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+        }
+        
+        .title-right input {
+            border: none;
+            border-bottom: 1px solid #000;
+            width: 80px;
+            font-size: 11pt;
+            font-weight: 700;
+            text-align: center;
+            margin-left: 5px;
+            background: transparent;
+        }
+
+        .subtitle {
+            font-size: 11pt; 
+            font-weight: 700;
+            color: #343a40;
+            background-color: #f8f9fa; 
+            padding: 5px 10px;
+            border-left: 5px solid #00A950; 
+            border-bottom: 1px solid #e9ecef;
+            margin-top: 5px; /* Ridotto per spazio note */
+            margin-bottom: 10px; 
+        }
+        
+        .flex-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px; 
+            align-items: flex-start; 
+            margin-bottom: 10px;
+        }
+        .flex-col {
+            display: flex;
+            flex-direction: column; 
+            align-items: flex-start;
+        }
+        label {
+            font-weight: 600;
+            margin-right: 8px;
+            white-space: nowrap;
+            color: #343a40; 
+            margin-bottom: 2px; 
+        }
+        input[type="text"], input[type="number"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea {
+            border: 1px solid #adb5bd; 
+            padding: 4px 8px; 
+            min-width: 80px;
+            box-sizing: border-box;
+            background-color: #fff; 
+            border-radius: 4px; 
+            font-size: 9.5pt; 
+            color: #212529;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05); 
+        }
+
+        /* --- STILE SENZA BORDI PER CAMPI NOTE --- */
+        textarea {
+            border: none;
+            border-bottom: 1px solid #6c757d;
+            background-image: linear-gradient(#f1f1f1 1px, transparent 1px);
+            background-size: 100% 1.5em;
+            line-height: 1.5em;
+            padding: 5px 10px;
+            resize: none;
+            box-shadow: none;
+            border-radius: 0;
+            width: 100%;
+        }
+        
+        .news2-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 8.5pt; 
+        }
+        .news2-table th, .news2-table td {
+            border: 1px solid #adb5bd; 
+            padding: 6px 4px; 
+            text-align: center;
+            vertical-align: middle;
+        }
+        .news2-table th {
+            background-color: #e9ecef;
+            font-weight: 700;
+            color: #343a40;
+        }
+        .news2-table td[data-score="-1"] {
+            background-color: #f4f6f8; 
+        }
+
+        .news2-table td.selected { 
+            background-color: #ffd700 !important; 
+            border: 2px solid #000 !important;
+            font-weight: 700;
+        }
+        
+        .news2-score-box {
+            display: inline-block;
+            padding: 5px 12px;
+            margin-left: 5px;
+            font-size: 14pt;
+            font-weight: 900;
+            border-radius: 6px;
+            min-width: 30px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .score-low { background-color: #e9f5ee; color: #007c40; border: 2px solid #00A950; } 
+        .score-medium { background-color: #fff3cd; color: #856404; border: 2px solid #ffc107; } 
+        .score-high { background-color: #f8d7da; color: #721c24; border: 2px solid #dc3545; } 
+
+        .ril-col-uniform {
+            flex-basis: calc(33.3% - 14px); 
+            box-sizing: border-box;
+            min-width: 180px;
+        }
+
+        .news2-ril-block {
+            padding: 15px; 
+            border: 2px solid #00A950; 
+            border-radius: 10px; 
+            background-color: #f7fcf9; 
+            line-height: 1.5;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .diagnosi-block-clean {
+            padding: 15px; 
+            line-height: 1.5;
+            background-color: transparent;
+        }
+
+        .news2-input-group {
+            padding: 3px 0; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .news2-input-group label {
+            font-weight: 500;
+            color: #212529;
+            margin-bottom: 0;
+        }
+        .news2-input-group input[type="number"], 
+        .news2-input-group select {
+            width: 60px; 
+            padding: 2px 4px;
+            font-size: 8.5pt;
+        }
+        
+        .diagnosi-item {
+            display: flex;
+            align-items: center;
+            font-size: 8pt;
+            margin-bottom: 2px;
+            line-height: 1.1;
+        }
+        .diagnosi-item label {
+            font-weight: 500;
+            margin-left: 4px;
+            white-space: normal;
+        }
+
+        /* --- OTTIMIZZAZIONE SPAZIO INTERVENTI --- */
+        .intervention-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(150px, 1fr)); 
+            gap: 2px 15px;
+            border: 1px solid #adb5bd; 
+            padding: 4px 8px 4px 8px;
+            background-color: #fcfcfc;
+            border-radius: 8px;
+        }
+        .intervention-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1px 0; 
+            font-size: 8.5pt;
+        }
+        .intervention-item label { 
+            font-weight: 700 !important;
+            color: #212529;
+            margin-right: 5px;
+            margin-bottom: 0;
+            line-height: 1.2;
+        }
+        .intervention-item input[type="text"], .intervention-item input[type="time"] {
+            font-weight: normal !important;
+            flex-grow: 1; 
+            min-width: 40px;
+            padding: 1px 4px;
+        }
+
+        .sintomo-con-ora {
+            padding: 2px 0; 
+            border: 1px dotted #ccc;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .ora-input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+            font-size: 8.5pt;
+        }
+        .ora-input-container input[type="time"] {
+            width: 70px; 
+            padding: 1px 3px;
+            font-size: 8.5pt;
+        }
+        
+        .signature-line-input {
+            border: none;
+            border-bottom: 1px solid #000;
+            background-color: transparent;
+            border-radius: 0;
+            padding: 2px 0;
+            text-align: left;
+            box-shadow: none;
+        }
+        
+        .controls { 
+            text-align: center;
+            padding: 10px;
+            background-color: #343a40;
+            margin-bottom: 10px;
+        }
+        .controls button {
+            padding: 8px 15px;
+            margin: 0 5px;
+            background-color: #00A950;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .controls button:hover {
+            background-color: #008740;
+        }
+
+        .personalization-footer {
+            position: absolute; 
+            bottom: 15px; 
+            right: 15px; 
+            font-size: 7pt; 
+            color: #6c757d;
+            text-align: right; 
+            padding: 0;
+            margin: 0;
+            width: auto;
+            z-index: 10;
+        }
+        
+        @media print {
+            .controls { display: none; }
+            .container { 
+                box-shadow: none; 
+                border: none; 
+                margin: 0; 
+                padding: 0; 
+                width: 100%; 
+                min-height: initial; 
+            }
+            body { 
+                background-color: white; 
+                font-size: 8.5pt; 
+            } 
+            
+            .section-page-2 {
+                page-break-before: always !important; 
+            }
+
+            input[type="text"], input[type="number"], input[type="date"], input[type="time"], input[type="datetime-local"], select,
+            .signature-line-input,
+            .news2-value-input {
+                border: none !important;
+                border-bottom: 1px solid #000 !important; 
+                padding: 0 !important;
+                background-color: transparent !important;
+                border-radius: 0 !important;
+                font-size: 8.5pt !important;
+                color: #000 !important; 
+                text-align: center;
+                box-shadow: none !important;
+            }
+
+            /* --- STILE STAMPA NOTE SENZA CORNICI --- */
+            textarea {
+                border: none !important;
+                border-bottom: 1px solid #000 !important;
+                background-color: #fff !important;
+                background-image: linear-gradient(#ccc 1px, transparent 1px) !important;
+                -webkit-print-color-adjust: exact;
+            }
+            
+             .news2-table td.selected { background-color: #ffd700 !important; border: 1px solid #000 !important; -webkit-print-color-adjust: exact; }
+             .news2-ril-block, .intervention-grid { border: 1px solid #000 !important; background-color: white !important; }
+             
+             .score-low, .score-medium, .score-high {
+                 background-color: white !important;
+                 color: #000 !important;
+                 border: 1px solid #000 !important;
+             }
+             .news2-table th, .news2-table td {
+                 border: 1px solid #000 !important;
+                 background-color: white !important;
+             }
+             .news2-table th {
+                border-top: 2px solid #000 !important;
+             }
+             
+             .subtitle { background-color: white !important; border-left: 5px solid #000 !important; }
+
+             .news2-total-container {
+                 flex-basis: auto !important; 
+                 margin-left: auto !important; 
+                 text-align: right !important;
+             }
+
+            .personalization-footer {
+                position: fixed !important; 
+                bottom: 10px !important;    
+                right: 10px !important;     
+                color: #000 !important;     
+                font-size: 7pt !important;
+            }
+            .sintomo-con-ora { border: 1px dotted #000 !important; }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" oncopy="return false;">
+    <div class="controls">
+        <button id="print-btn">🖨️ Stampa Scheda Completa (A4)</button> 
+        <button id="save-btn">💾 Salva Dati (JSON)</button>
+    </div>
+
+    <div class="container">
+        
+        <div class="header-top">
+            <div class="header-logo" style="flex-basis: 28%; display: flex; align-items: center;">
+                <img src="https://drive.google.com/thumbnail?id=19ohVGsOKUE2KYydDtrONi3dHS_aWFClj&sz=w200" alt="Logo AOUC Personalizzato" class="aou-logo">
+                <div>
+                    <span class="aouc-text-color">Azienda Ospedaliero Universitaria Careggi</span>
+                </div>
+            </div>
+            
+            <div class="header-center-combined" style="flex-basis: 42%; display: flex; align-items: center; justify-content: center;">
+                <img src="https://drive.google.com/thumbnail?id=1CO7-eh9kV9ozZZWrNKH_YOB51x-GKbSd" alt="Logo Centrale">
+                <div style="text-align: center; font-weight: bold;">
+                    Centrale Operativa Sanitaria (COS)<br>
+                    Medical Emergency Team - MET<br>
+                    <span class="aouc-subtext-color" style="font-weight: normal;">Padiglione 17 - San Damiano</span>
+                </div>
+            </div>
+
+            <div class="header-right" style="flex-basis: 30%; text-align: right; display: flex; flex-direction: column; align-items: flex-end;">
+                <img src="https://drive.google.com/thumbnail?id=130Slxf8E0tWSIQ975PrkIfps0T4A7fCY&sz=w200" alt="Identificativo" style="max-height: 45px; width: auto;">
+                <div style="font-size: 9pt; font-weight: bold; margin-top: 2px;">
+                    M/....../....../......
+                </div>
+            </div>
+        </div>
+
+        <div class="title">
+            <span class="title-left">SCHEDA UNICA DI INTERVENTO - MET</span>
+            <span class="title-right">Scheda n. <input type="text" id="num-scheda-header"></span>
+        </div>
+        
+        <div class="section" style="margin-bottom: 2px;">
+            <div class="subtitle">👤 Dati Anagrafici e Identificazione</div>
+            <div class="flex-group">
+                <div class="flex-col" style="flex-basis: 25%;"><label for="cognome">Cognome:</label><input type="text" id="cognome" style="width: 100%;"></div>
+                <div class="flex-col" style="flex-basis: 25%;"><label for="nome">Nome:</label><input type="text" id="nome" style="width: 100%;"></div>
+                <div class="flex-col" style="flex-basis: 15%;">
+                    <label for="data-nascita">Data di Nascita:</label>
+                    <input type="date" id="data-nascita" style="width: 100%;" onchange="calculateAge()">
+                </div>
+                <div class="flex-col" style="flex-basis: 10%;"><label for="eta">Età:</label><input type="number" id="eta" style="width: 100%;"></div>
+                <div class="flex-col" style="flex-basis: 10%;"><label for="sesso">Sesso:</label><input type="text" id="sesso" style="width: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="subtitle">🚑 Informazioni Intervento</div>
+            
+            <div class="flex-group" style="font-size: 9pt;">
+                <div><label><input type="checkbox" id="emergenza2222">Emergenza Intraospedaliera 2222</label></div>
+                <div><label><input type="checkbox" id="infermieristico">Infermieristico</label></div>
+                <div><label><input type="checkbox" id="toscanasoccorso">Toscana Soccorso</label></div>
+                <div style="display: flex; align-items: center;"><label><input type="checkbox" id="pegaso">Pegaso:</label><input type="text" id="pegaso-dettaglio" class="signature-line-input" style="width: 80px; margin-left: 5px;"></div>
+            </div>
+            
+            <div class="flex-group" style="margin-top: 5px;">
+                <div class="flex-col" style="flex-basis: 30%;">
+                    <label for="struttura-reparto">Struttura / Reparto:</label>
+                    <input type="text" id="struttura-reparto" style="width: 100%;">
+                </div>
+                <div class="flex-col" style="flex-basis: 30%;">
+                    <label for="destinazione">Destinazione:</label>
+                    <input type="text" id="destinazione" style="width: 100%;">
+                </div>
+                <div class="flex-col" style="flex-basis: 30%;">
+                    <label for="data-ora-chiamata">Data e ora chiamata:</label>
+                    <input type="datetime-local" id="data-ora-chiamata" style="width: 100%;">
+                </div>
+            </div>
+
+            <div class="flex-group" style="margin-top: 15px; align-items: flex-start;">
+                <div class="flex-col" style="flex-basis: 100%; margin-bottom: 8px;">
+                    <label style="font-size: 10pt; font-weight: 700;">Team composto da:</label>
+                </div>
+                
+                <div style="flex-basis: calc(50% - 10px); display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; font-size: 9pt;">
+                        <label style="font-weight: 500; margin-right: 15px;"><input type="checkbox" id="medico-strutturato">Medico Strutturato:</label>
+                        <input type="text" class="signature-line-input" id="medico-nome" style="flex-grow: 1;">
+                    </div>
+                    <div style="display: flex; align-items: center; font-size: 9pt;">
+                        <label style="font-weight: 500; margin-right: 15px;"><input type="checkbox" id="specializzando">Specializzando:</label>
+                        <input type="text" class="signature-line-input" id="specializzando-nome" style="flex-grow: 1;">
+                    </div>
+                </div>
+
+                <div style="flex-basis: calc(50% - 10px); display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; font-size: 9pt;">
+                        <label style="font-weight: 500; margin-right: 15px;"><input type="checkbox" id="infermiere-team">Infermiere:</label>
+                        <input type="text" class="signature-line-input" id="infermiere-nome" style="flex-grow: 1;">
+                    </div>
+                    <div style="display: flex; align-items: center; font-size: 9pt;">
+                        <label style="font-weight: 500; margin-right: 15px;"><input type="checkbox" id="altro-team">OTA/OSS/Ass.Inf. Spec:</label>
+                        <input type="text" class="signature-line-input" id="altro-team-spec" style="flex-grow: 1;">
+                    </div>
+                </div>
+            </div>
+            </div>
+
+        <div class="section">
+            <div class="subtitle">🩺 Segni Vitali del Paziente - NEWS 2 (Alert)</div>
+            
+            <div style="margin-top: 5px; margin-bottom: 10px; font-size: 9.5pt; font-weight: bold; padding-top: 5px; display: flex; flex-wrap: wrap; gap: 30px;">
+                <span>IOT: <label style="font-weight:normal; margin-left:10px;"><input type="radio" name="iot-choice"> si</label><label style="font-weight:normal; margin-left:5px;"><input type="radio" name="iot-choice"> no</label></span>
+                <span>Ventilazione Meccanica: <label style="font-weight:normal; margin-left:10px;"><input type="radio" name="vm-choice"> si</label><label style="font-weight:normal; margin-left:5px;"><input type="radio" name="vm-choice"> no</label></span>
+                <span>Shock Index (FC/PAS): <span id="shock-index-val" style="margin-left: 5px; font-size: 11pt; font-weight: 900; color: #212529;">0.00</span></span>
+            </div>
+
+            <table class="news2-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Parametro</th>
+                        <th>Score 3</th><th>Score 2</th><th>Score 1</th><th>Score 0</th><th>Score 1</th><th>Score 2</th><th>Score 3</th>
+                        <th style="width: 12%;">Valore Misurato</th><th style="width: 6%;">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="fr-row">
+                        <td>Freq. Respiratoria (FR) / Minuto</td>
+                        <td data-score="3">≤8</td><td data-score="-1"></td><td data-score="1">9-11</td><td data-score="0">12-20</td><td data-score="-1"></td><td data-score="2">21-24</td><td data-score="3">≥25</td>
+                        <td><input type="number" class="fr-value news2-value-input" oninput="calculateNews2();"></td><td><span id="fr-score">0</span></td>
+                    </tr>
+                    <tr id="spo2-row">
+                        <td>SpO2 (%-2) (Scala 1/2)</td>
+                        <td data-score="3">≤91 (1) / ≤85 (2)</td><td data-score="2">92-93 (1) / 86-87 (2)</td><td data-score="1">94-95 (1) / 88-91 (2)</td><td data-score="0">≥96 (1) / ≥92 (2)</td><td colspan="3" data-score="-1"></td>
+                        <td><input type="number" class="spo2-value news2-value-input" oninput="calculateNews2();"></td><td><span id="spo2-score">0</span></td>
+                    </tr>
+                    <tr id="pa-row">
+                        <td>Press. Arteriosa Sistolica (PA) (mmHg)</td>
+                        <td data-score="3">≤90</td><td data-score="2">91-100</td><td data-score="1">101-110</td><td data-score="0">111-219</td><td data-score="-1"></td><td data-score="-1"></td><td data-score="3">≥220</td>
+                        <td><input type="number" class="pa-value news2-value-input" oninput="calculateNews2();"></td><td><span id="pa-score">0</span></td>
+                    </tr>
+                    <tr id="fc-row">
+                        <td>Freq. Cardiaca (FC) / Minuto</td>
+                        <td data-score="3">≤40</td><td data-score="-1"></td><td data-score="1">41-50</td><td data-score="0">51-90</td><td data-score="1">91-110</td><td data-score="2">111-130</td><td data-score="3">≥131</td>
+                        <td><input type="number" class="fc-value news2-value-input" oninput="calculateNews2();"></td><td><span id="fc-score">0</span></td>
+                    </tr>
+                    <tr id="temp-row">
+                        <td>Temperatura (°C)</td>
+                        <td data-score="3">≤35.0</td><td data-score="-1"></td><td data-score="1">35.1-36.0</td><td data-score="0">36.1-38.0</td><td data-score="1">38.1-39.0</td><td data-score="-1"></td><td data-score="3">≥39.1</td>
+                        <td><input type="number" step="0.1" class="temp-value news2-value-input" oninput="calculateNews2();"></td><td><span id="temp-score">0</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="margin-top: 15px; font-size: 9.5pt;" class="flex-group">
+                <div style="flex-basis: 30%;">
+                    <label>Scala SpO2:</label>
+                    <label><input type="radio" name="spo2-scale" id="scale-1" value="1" checked onchange="calculateNews2(); updateRivalutazioni();"> Scala 1</label>
+                    <label><input type="radio" name="spo2-scale" id="scale-2" value="2" onchange="calculateNews2(); updateRivalutazioni();"> Scala 2</label>
+                </div>
+                <div style="flex-basis: 30%;">
+                    <label for="acvpu-select">Coscienza (ACVPU):</label>
+                    <select id="acvpu-select" onchange="calculateNews2()" style="padding: 3px; font-size: 9.5pt;">
+                        <option value="">--</option>
+                        <option value="A" data-score="0">A - Sveglio</option>
+                        <option value="C" data-score="3">C - Confuso</option>
+                        <option value="V" data-score="3">V - Risposta Verbale</option>
+                        <option value="P" data-score="3">P - Risposta Dolore</option>
+                        <option value="U" data-score="3">U - Non Risvegliabile</option>
+                    </select>
+                </div>
+                <div style="flex-basis: 15%;">
+                    <label for="oxygen-check">O2 Suppl.:</label>
+                    <label><input type="checkbox" id="oxygen-check" onchange="calculateNews2()">Sì (+2)</label>
+                </div>
+                <div class="news2-total-container" style="flex-basis: 15%; text-align: right;">
+                    <label style="font-size: 10pt; font-weight: bold;">NEWS 2:</label>
+                    <span class="news2-score-box score-low" id="news2-total">0</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 10px;">
+                <label for="note-dinamica" style="display: block; font-weight: 700;">Note e/o Dinamica Evento (Motivo Chiamata):</label>
+                <textarea id="note-dinamica" rows="10"></textarea> </div>
+
+            <div style="margin-top: 10px; display: flex; align-items: center; gap: 20px;">
+                <div style="flex-grow: 1; display: flex; align-items: center; gap: 10px;">
+                    <label for="infermiere-triagista" style="font-weight: 700; white-space: nowrap;">Infermiere Triagista:</label>
+                    <input type="text" id="infermiere-triagista" class="signature-line-input" style="width: 100%; font-size: 10pt;">
+                </div>
+            </div>
+        </div>
+
+        <div class="section section-page-2"> 
+            <div class="subtitle">📈 Rivalutazione del paziente all'arrivo del TEAM</div>
+            
+            <div style="margin-top: 5px; margin-bottom: 20px; font-size: 9.5pt; font-weight: bold; padding: 10px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef; display: flex; flex-wrap: wrap; gap: 30px;">
+                <span>IOT: <label style="font-weight:normal; margin-left:10px;"><input type="radio" name="iot-choice-ril"> si</label><label style="font-weight:normal; margin-left:5px;"><input type="radio" name="iot-choice-ril"> no</label></span>
+                <span>Ventilazione Meccanica: <label style="font-weight:normal; margin-left:10px;"><input type="radio" name="vm-choice-ril"> si</label><label style="font-weight:normal; margin-left:5px;"><input type="radio" name="vm-choice-ril"> no</label></span>
+                <span>Shock Index (FC/PAS): <span id="shock-index-ril-val" style="margin-left: 5px; font-size: 11pt; font-weight: 900; color: #212529;">0.00</span></span>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <div class="flex-group">
+                    <div class="news2-ril-block flex-col ril-col-uniform">
+                        <div class="flex-col" style="width: 100%; margin-bottom: 5px;">
+                            <label for="ril-ora-1" style="font-size: 10pt; font-weight: bold;">Rilevazione all'arrivo ora:</label>
+                            <input type="time" id="ril-ora-1" data-ril="1" oninput="calculateRilevazioneNews2(1)" style="width: 100%; box-sizing: border-box; text-align: center;">
+                        </div>
+                        <div style="margin-top: 8px; width: 100%; box-sizing: border-box;">
+                            <div class="news2-input-group"><label>FR (Respiri/min):</label><input type="number" id="ril-fr-1" data-ril="1" oninput="calculateRilevazioneNews2(1)"></div>
+                            <div class="news2-input-group"><label>SpO2 (%):</label><input type="number" id="ril-spo2-1" data-ril="1" oninput="calculateRilevazioneNews2(1)"></div>
+                            <div class="news2-input-group"><label>PA Sist. (mmHg):</label><input type="number" id="ril-pa-1" data-ril="1" oninput="calculateRilevazioneNews2(1)"></div>
+                            <div class="news2-input-group"><label>FC (Batti/min):</label><input type="number" id="ril-fc-1" data-ril="1" oninput="calculateRilevazioneNews2(1)"></div>
+                            <div class="news2-input-group"><label>Temp (°C):</label><input type="number" step="0.1" id="ril-temp-1" data-ril="1" oninput="calculateRilevazioneNews2(1)"></div>
+                            <div class="news2-input-group"><label>ACVPU:</label>
+                                <select id="ril-acvpu-1" data-ril="1" onchange="calculateRilevazioneNews2(1)" style="padding: 1px 0; width: 60px;">
+                                    <option value="">--</option><option value="A" data-score="0">A</option><option value="C" data-score="3">C</option><option value="V" data-score="3">V</option><option value="P" data-score="3">P</option><option value="U" data-score="3">U</option>
+                                </select>
+                            </div>
+                            <div class="news2-input-group" style="border-bottom: none;"><label>O2 Suppl. (+2):</label><input type="checkbox" id="ril-oxygen-1" data-ril="1" onchange="calculateRilevazioneNews2(1)"></div>
+                        </div>
+                        <div style="text-align: right; margin-top: 10px;">
+                            <label style="font-size: 10pt; font-weight: bold;">NEWS 2:</label>
+                            <span class="news2-score-box score-low" id="ril-news2-1" style="font-size: 11pt; padding: 3px 8px;">0</span>
+                        </div>
+                    </div>
+
+                    <div class="news2-ril-block flex-col ril-col-uniform">
+                        <div class="flex-col" style="width: 100%; margin-bottom: 5px;">
+                            <label for="ril-ora-2" style="font-size: 10pt; font-weight: bold;">Rilevazione Fine Intervento ora:</label>
+                            <input type="time" id="ril-ora-2" data-ril="2" oninput="calculateRilevazioneNews2(2)" style="width: 100%; box-sizing: border-box; text-align: center;">
+                        </div>
+                        <div style="margin-top: 8px; width: 100%; box-sizing: border-box;">
+                            <div class="news2-input-group"><label>FR (Respiri/min):</label><input type="number" id="ril-fr-2" data-ril="2" oninput="calculateRilevazioneNews2(2)"></div>
+                            <div class="news2-input-group"><label>SpO2 (%):</label><input type="number" id="ril-spo2-2" data-ril="2" oninput="calculateRilevazioneNews2(2)"></div>
+                            <div class="news2-input-group"><label>PA Sist. (mmHg):</label><input type="number" id="ril-pa-2" data-ril="2" oninput="calculateRilevazioneNews2(2)"></div>
+                            <div class="news2-input-group"><label>FC (Batti/min):</label><input type="number" id="ril-fc-2" data-ril="2" oninput="calculateRilevazioneNews2(2)"></div>
+                            <div class="news2-input-group"><label>Temp (°C):</label><input type="number" step="0.1" id="ril-temp-2" data-ril="2" oninput="calculateRilevazioneNews2(2)"></div>
+                            <div class="news2-input-group"><label>ACVPU:</label>
+                                <select id="ril-acvpu-2" data-ril="2" onchange="calculateRilevazioneNews2(2)" style="padding: 1px 0; width: 60px;">
+                                    <option value="">--</option><option value="A" data-score="0">A</option><option value="C" data-score="3">C</option><option value="V" data-score="3">V</option><option value="P" data-score="3">P</option><option value="U" data-score="3">U</option>
+                                </select>
+                            </div>
+                            <div class="news2-input-group" style="border-bottom: none;"><label>O2 Suppl. (+2):</label><input type="checkbox" id="ril-oxygen-2" data-ril="2" onchange="calculateRilevazioneNews2(2)"></div>
+                        </div>
+                        <div style="text-align: right; margin-top: 10px;">
+                            <label style="font-size: 10pt; font-weight: bold;">NEWS 2:</label>
+                            <span class="news2-score-box score-low" id="ril-news2-2" style="font-size: 11pt; padding: 3px 8px;">0</span>
+                        </div>
+                    </div>
+
+                    <div class="diagnosi-block-clean flex-col ril-col-uniform">
+                        <div class="flex-col" style="width: 100%; margin-bottom: 5px;">
+                            <label style="font-size: 10pt; font-weight: bold; color: #343a40;">DIAGNOSI MEDICA:</label>
+                        </div>
+                        <div style="display: flex; flex-direction: column; width: 100%;">
+                            <div class="diagnosi-item"><input type="checkbox"><label>ACR</label></div>
+                            <div class="diagnosi-item"><input type="checkbox"><label>SCOMPENSO CARDIACO e/o ARITMIE</label></div>
+                            <div class="diagnosi-item"><input type="checkbox"><label>COMA e/o CRISI EPILETTICA</label></div>
+                            <div class="diagnosi-item"><input type="checkbox"><label>INSUFF. RESPIRATORIA</label></div>
+                            <div class="diagnosi-item"><input type="checkbox"><label>ISCHEMIA CEREBRALE</label></div>
+                            <div class="diagnosi-item"><input type="checkbox"><label>IMA</label></div>
+                            <div class="diagnosi-item"><input type="checkbox"><label>ALT. IDRO-ELETTROLITICA e/o METABOLICA</label></div>
+                            <div class="diagnosi-item"><input type="checkbox"><label>SANGUINAMENTO e/o SHOCK</label></div>
+                            <div class="diagnosi-item" style="margin-top:2px;"><input type="checkbox"><label>TRAUMA MAGGIORE (Dettagliare in Note):</label></div>
+                            <div class="diagnosi-item"><input type="checkbox"><label>ALTRO (Dettagliare in Note):</label></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="subtitle">🩺 Segni e Sintomi Rilevati</div>
+            <div class="intervention-grid" id="symptoms-grid">
+                <div><label><input type="checkbox" id="sint-dolore-add">Dolore Addominale</label></div>
+                <div class="sintomo-con-ora">
+                    <label style="font-weight: bold;"><input type="checkbox" id="sint-dolore-tor">Dolore Toracico</label>
+                    <div class="ora-input-container"><label>Inizio ore:</label><input type="time" id="inizio-sintomi-toracico"></div>
+                </div>
+                <div class="sintomo-con-ora">
+                    <label style="font-weight: bold;"><input type="checkbox" id="sint-alt-stato-neurologico">Alt. Stato Neurologico</label>
+                    <div class="ora-input-container"><label>Inizio ore:</label><input type="time" id="inizio-sintomi-linguaggio"></div>
+                </div>
+                <div><label><input type="checkbox" id="sint-miosi">Miosi</label></div>
+                <div><label><input type="checkbox" id="sint-midriasi">Midriasi</label></div>
+                <div><label><input type="checkbox" id="sint-anisocoria">Anisocoria</label></div>
+                <div><label><input type="checkbox" id="sint-emorragia">Emorragia</label></div>
+                <div><label><input type="checkbox" id="sint-ematuria">Ematuria</label></div>
+                <div><label><input type="checkbox" id="sint-melena-rettoragia">Melena-Rettoragia</label></div>
+                <div><label><input type="checkbox" id="sint-emoftoe-emottisi">Emoftoe / Emottisi</label></div>
+                <div><label><input type="checkbox" id="sint-ematemesi">Ematemesi</label></div>
+                <div class="intervention-item" style="justify-content: flex-start; gap: 5px;">
+                    <label style="font-weight: bold !important; display: flex; align-items: center; white-space: nowrap;"><input type="checkbox" id="sint-altro" style="margin-right: 5px;">Altro:</label>
+                    <input type="text" class="signature-line-input" id="sint-altro-testo" style="flex-grow: 1;">
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="subtitle">💉 Interventi e Trattamenti eseguiti</div>
+            <div class="intervention-grid" id="interventions-grid">
+                <div class="intervention-item"><label>O2 litri / min:</label><input type="text" class="signature-line-input" id="int-o2-litri"></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-rcp">RCP ore:</label><input type="time" id="inizio-rcp" class="signature-line-input"></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-accesso-venoso">Accesso Venoso n.</label><input type="text" class="signature-line-input" id="int-accesso-venoso-num"></div>
+                <div class="intervention-item"><label style="display: flex; align-items: center; gap: 5px; white-space: nowrap;"><input type="checkbox" id="int-ventilazione">Ventilaz. Meccanica <input type="checkbox" id="int-ventilazione-iv" style="margin-left: 10px;">IV <input type="checkbox" id="int-ventilazione-niv" style="margin-left: 10px;">NIV</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-lucas">Mass. Mecc. Esterno (LUCAS)</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-estricazione">Estricaz. Complessa</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-immob-arti">Immob. Arti</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-collare">Collare Cervicale</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-posiz-sng">Posiz. SNG</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-aspirazione">Aspirazione</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-spinale-immob">Immobilizzazione su Spinale</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-protezione-termica">Protez. Termica</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-emostasi">Emostasi</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-cannula-oro">Cannula Oro-Far.</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-disostruzione">Disostruzione Vie Aeree</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-cardioversione">Cardioversione</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-correzione-volemica">Correzione Volemica</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-intubazione-tracheale">Intubazione Tracheale</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-avc">Accesso Venoso Centrale</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-farmaci">Somm. Farmaci (Dettagliare in Note)</label></div>
+                <div class="intervention-item"><label><input type="checkbox" id="int-rimozione-casco">Rimozione Casco</label></div>
+            </div>
+
+            <div style="margin-top: 8px; border: 1px solid #adb5bd; border-radius: 6px; padding: 6px 10px; background-color: #fff; display: flex; align-items: center; flex-direction: row; gap: 20px; font-size: 8.5pt;">
+                <label style="font-weight: 700; color: #212529;">ESITO:</label>
+                <label style="white-space: nowrap;"><input type="radio" name="esito" style="vertical-align: middle;"> Trasf. in DEAS-PS</label>
+                <label style="white-space: nowrap;"><input type="radio" name="esito" style="vertical-align: middle;"> Trattato sul posto</label>
+                <label style="white-space: nowrap;"><input type="radio" name="esito" style="vertical-align: middle;"> Decesso</label>
+                <div style="display: flex; align-items: center; flex-grow: 1;">
+                    <label style="white-space: nowrap; margin-right: 5px;"><input type="radio" name="esito" style="vertical-align: middle;"> Altro Trasf.:</label>
+                    <input type="text" class="signature-line-input" id="esito-altro-dettaglio" style="flex-grow: 1; min-width: 100px;">
+                </div>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <label for="note-intervento" style="display: block; font-weight: 700;">Note Aggiuntive sull'intervento:</label>
+                <textarea id="note-intervento" rows="10"></textarea> </div>
+            
+            <div style="margin-top: 5px; border-top: 2px dashed #adb5bd; padding-top: 8px;" class="flex-group">
+                <div class="flex-col" style="flex-basis: 31%;"><label for="firma-medico" style="margin-bottom: 0;">Firma Team Leader:</label><input type="text" class="signature-line-input" id="firma-medico" style="width: 100%;"></div>
+                <div class="flex-col" style="flex-basis: 31%;"><label for="firma-specializzando" style="margin-bottom: 0;">Firma Specializzando:</label><input type="text" class="signature-line-input" id="firma-specializzando" style="width: 100%;"></div>
+                <div class="flex-col" style="flex-basis: 31%;"><label for="firma-infermiere" style="margin-bottom: 0;">Firma (Infermiere):</label><input type="text" class="signature-line-input" id="firma-infermiere" style="width: 100%;"></div>
+                
+                <div class="flex-col" style="flex-basis: 100%; margin-top: 2px; align-items: flex-end;">
+                     <div style="display: flex; align-items: center; gap: 10px;">
+                        <label for="ora-fine-intervento" style="font-weight:bold; margin:0;">Ora fine Intervento:</label>
+                        <input type="time" id="ora-fine-intervento" style="border:none; border-bottom:1px solid #000; background:transparent; font-size: 10pt; width: 100px; text-align: center;">
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <div class="personalization-footer">
+            Quest'opera è distribuita con Licenza <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/" style="color:inherit; text-decoration:none; font-weight:bold;">CC BY-NC-ND 4.0</a>. 
+            Proprietà intellettuale di **Inf. Giovanni Nonominato**. 
+            Adattata per AUOC - **Versione: 4.3 R. Print Update**.
+        </div>
+    </div> 
+
+    <script>
+        function calculateAge() {
+            const birthDateInput = document.getElementById('data-nascita');
+            const ageInput = document.getElementById('eta');
+            if (birthDateInput.value) {
+                const birthDate = new Date(birthDateInput.value);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                if (today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) age--;
+                ageInput.value = age;
+            }
+        }
+
+        function getNews2Score(parameter, value, scale) {
+            value = parseFloat(value);
+            if (isNaN(value)) return 0;
+            switch (parameter) {
+                case 'FR': 
+                    if (value <= 8 || value >= 25) return 3;
+                    if (value >= 21 && value <= 24) return 2;
+                    if (value >= 9 && value <= 11) return 1;
+                    return 0;
+                case 'SPO2': 
+                    if (scale === '1') {
+                        if (value <= 91) return 3;
+                        if (value >= 92 && value <= 93) return 2;
+                        if (value >= 94 && value <= 95) return 1;
+                        return 0;
+                    } else {
+                        if (value <= 85) return 3;
+                        if (value >= 86 && value <= 87) return 2;
+                        if (value >= 88 && value <= 91) return 1;
+                        return 0;
+                    }
+                case 'PA': 
+                    if (value <= 90 || value >= 220) return 3;
+                    if (value >= 91 && value <= 100) return 2;
+                    if (value >= 101 && value <= 110) return 1;
+                    return 0;
+                case 'FC': 
+                    if (value <= 40 || value >= 131) return 3;
+                    if (value >= 111 && value <= 130) return 2;
+                    if (value >= 41 && value <= 50 || value >= 91 && value <= 110) return 1;
+                    return 0;
+                case 'TEMP': 
+                    value = Math.round(value * 10) / 10;
+                    if (value <= 35.0 || value >= 39.1) return 3;
+                    if (value >= 35.1 && value <= 36.0 || value >= 38.1 && value <= 39.0) return 1;
+                    return 0;
+                default: return 0;
+            }
+        }
+
+        function highlightCell(rowId, score, value, parameter) {
+            const row = document.getElementById(rowId);
+            if (!row) return;
+            const cells = row.querySelectorAll('td[data-score]');
+            cells.forEach(cell => cell.classList.remove('selected'));
+            
+            if (isNaN(parseFloat(value))) return;
+
+            cells.forEach(cell => {
+                const cellScore = parseInt(cell.getAttribute('data-score'));
+                if (cellScore === score) {
+                    const text = cell.innerText;
+                    if (score > 0) {
+                        if (parameter === 'FR' && score === 3) {
+                           if (value <= 8 && text.includes('≤8')) cell.classList.add('selected');
+                           if (value >= 25 && text.includes('≥25')) cell.classList.add('selected');
+                        } else if (parameter === 'PA' && score === 3) {
+                           if (value <= 90 && text.includes('≤90')) cell.classList.add('selected');
+                           if (value >= 220 && text.includes('≥220')) cell.classList.add('selected');
+                        } else if (parameter === 'FC' && score === 1) {
+                           if (value <= 50 && text.includes('41-50')) cell.classList.add('selected');
+                           if (value >= 91 && text.includes('91-110')) cell.classList.add('selected');
+                        } else if (parameter === 'TEMP' && score === 1) {
+                           if (value <= 36.0 && text.includes('35.1-36.0')) cell.classList.add('selected');
+                           if (value >= 38.1 && text.includes('38.1-39.0')) cell.classList.add('selected');
+                        } else {
+                           cell.classList.add('selected');
+                        }
+                    } else if (score === 0) {
+                        cell.classList.add('selected');
+                    }
+                }
+            });
+        }
+
+        function calculateNews2() {
+            const scaleElement = document.querySelector('input[name="spo2-scale"]:checked');
+            const scale = scaleElement ? scaleElement.value : '1';
+            let total = 0;
+            const params = [
+                {id: 'fr', p: 'FR', class: 'fr-value', row: 'fr-row'}, 
+                {id: 'spo2', p: 'SPO2', class: 'spo2-value', row: 'spo2-row'},
+                {id: 'pa', p: 'PA', class: 'pa-value', row: 'pa-row'}, 
+                {id: 'fc', p: 'FC', class: 'fc-value', row: 'fc-row'},
+                {id: 'temp', p: 'TEMP', class: 'temp-value', row: 'temp-row'}
+            ];
+            params.forEach(obj => {
+                const input = document.querySelector(`.${obj.class}`);
+                const val = input ? input.value : "";
+                const score = getNews2Score(obj.p, val, scale);
+                const scoreDisplay = document.getElementById(`${obj.id}-score`);
+                if (scoreDisplay) scoreDisplay.textContent = score;
+                highlightCell(obj.row, score, val, obj.p);
+                total += score;
+            });
+            const acvpu = document.getElementById('acvpu-select');
+            total += parseInt(acvpu.options[acvpu.selectedIndex].dataset.score || 0);
+            if (document.getElementById('oxygen-check').checked) total += 2;
+            const box = document.getElementById('news2-total');
+            box.textContent = total;
+            box.className = 'news2-score-box ' + (total >= 5 ? 'score-high' : (total > 0 ? 'score-medium' : 'score-low'));
+
+            const paInput = document.querySelector('.pa-value');
+            const fcInput = document.querySelector('.fc-value');
+            const paVal = paInput ? parseFloat(paInput.value) : 0;
+            const fcVal = fcInput ? parseFloat(fcInput.value) : 0;
+            const siDisplay = document.getElementById('shock-index-val');
+            if (paVal > 0 && fcVal > 0) {
+                const si = (fcVal / paVal).toFixed(2);
+                siDisplay.textContent = si;
+                siDisplay.style.color = (si >= 0.9) ? "#dc3545" : "#212529";
+            } else {
+                siDisplay.textContent = "0.00";
+            }
+        }
+
+        function calculateRilevazioneNews2(ril) {
+            const scaleElement = document.querySelector('input[name="spo2-scale"]:checked');
+            const scale = scaleElement ? scaleElement.value : '1';
+            let total = 0;
+            let currentFC = 0;
+            let currentPA = 0;
+
+            const fields = ['fr', 'spo2', 'pa', 'fc', 'temp'];
+            fields.forEach(f => {
+                const input = document.getElementById(`ril-${f}-${ril}`);
+                const val = input ? parseFloat(input.value) : NaN;
+                total += getNews2Score(f.toUpperCase(), val, scale);
+                if (f === 'fc') currentFC = val;
+                if (f === 'pa') currentPA = val;
+            });
+
+            const acvpu = document.getElementById(`ril-acvpu-${ril}`);
+            if (acvpu.selectedIndex !== -1) {
+                total += parseInt(acvpu.options[acvpu.selectedIndex].dataset.score || 0);
+            }
+            
+            const oxyCheck = document.getElementById(`ril-oxygen-${ril}`);
+            if (oxyCheck && oxyCheck.checked) total += 2;
+            
+            const box = document.getElementById(`ril-news2-${ril}`);
+            box.textContent = total;
+            box.className = 'news2-score-box ' + (total >= 5 ? 'score-high' : (total > 0 ? 'score-medium' : 'score-low'));
+
+            const siRilDisplay = document.getElementById('shock-index-ril-val');
+            if (currentPA > 0 && currentFC > 0) {
+                const si = (currentFC / currentPA).toFixed(2);
+                siRilDisplay.textContent = si;
+                siRilDisplay.style.color = (si >= 0.9) ? "#dc3545" : "#212529";
+            }
+        }
+
+        function updateRivalutazioni() {
+            calculateRilevazioneNews2(1);
+            calculateRilevazioneNews2(2);
+        }
+
+        document.getElementById('print-btn').addEventListener('click', () => {
+            window.print();
+        });
+    </script>
+</body>
+</html>
